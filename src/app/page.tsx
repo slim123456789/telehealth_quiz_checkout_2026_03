@@ -701,23 +701,69 @@ export default function Home() {
                               </p>
                             </div>
                             <div className="mt-2 flex items-center gap-2">
-                              <select
-                                value={cycle}
-                                onChange={(event) =>
-                                  setBillingByProduct((current) => ({
-                                    ...current,
-                                    [product.id]: event.target
-                                      .value as BillingCycle,
-                                  }))
-                                }
-                                className="min-w-0 flex-1 rounded-lg border border-black/20 bg-white px-2 py-1.5 text-xs [font-family:var(--font-gt-america)]"
+                              <div
+                                className="relative min-w-0 flex-1"
+                                onBlur={(event) => {
+                                  const nextTarget =
+                                    event.relatedTarget as Node | null;
+                                  if (!event.currentTarget.contains(nextTarget)) {
+                                    setOpenBillingDropdownFor((current) =>
+                                      current === product.id ? null : current
+                                    );
+                                  }
+                                }}
                               >
-                                {BILLING_OPTIONS.map((option) => (
-                                  <option key={option.value} value={option.value}>
-                                    {option.label}
-                                  </option>
-                                ))}
-                              </select>
+                                <button
+                                  type="button"
+                                  className="flex h-9 w-full items-center justify-between rounded-xl border border-black/20 bg-white px-3 text-xs [font-family:var(--font-gt-america)] text-black"
+                                  onClick={() =>
+                                    setOpenBillingDropdownFor((current) =>
+                                      current === product.id ? null : product.id
+                                    )
+                                  }
+                                  aria-haspopup="listbox"
+                                  aria-expanded={openBillingDropdownFor === product.id}
+                                >
+                                  <span>
+                                    {getBillingOption(cycle).label}
+                                  </span>
+                                  <span className="text-black/65">⌄</span>
+                                </button>
+                                {openBillingDropdownFor === product.id ? (
+                                  <div
+                                    role="listbox"
+                                    className="absolute left-0 right-0 top-[calc(100%+0.35rem)] z-30 overflow-hidden rounded-xl border border-[#0033FF]/25 bg-white shadow-[0_14px_28px_-20px_rgba(0,51,255,0.85)]"
+                                  >
+                                    {BILLING_OPTIONS.map((option) => {
+                                      const isActive = option.value === cycle;
+                                      return (
+                                        <button
+                                          key={option.value}
+                                          type="button"
+                                          role="option"
+                                          aria-selected={isActive}
+                                          onClick={() => {
+                                            setBillingByProduct((current) => ({
+                                              ...current,
+                                              [product.id]:
+                                                option.value as BillingCycle,
+                                            }));
+                                            setOpenBillingDropdownFor(null);
+                                          }}
+                                          className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs [font-family:var(--font-gt-america)] ${
+                                            isActive
+                                              ? "bg-[rgba(0,51,255,0.18)] text-[#0033FF]"
+                                              : "text-black hover:bg-[rgba(0,51,255,0.08)]"
+                                          }`}
+                                        >
+                                          <span>{option.label}</span>
+                                          {isActive ? <span>✓</span> : null}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                ) : null}
+                              </div>
                               <button
                                 type="button"
                                 onClick={() => addProduct(product.id)}
