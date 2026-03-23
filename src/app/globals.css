@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+  --enhanced-primary: #0033ff;
+  --enhanced-primary-hover: #0027cc;
+  --font-gt-america: "GT America", "Avenir Next", "Segoe UI", sans-serif;
+  --font-gt-america-extended: "GT America Extended", "Avenir Next", "Segoe UI",
+    sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@font-face {
+  font-family: "GT America";
+  src: url("https://shop.enhanced.com/cdn/shop/t/53/assets/GT-America-Standard-Regular.woff2?v=115723050121758216831773860597")
+    format("woff2");
+  font-weight: 450;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT America";
+  src: url("https://shop.enhanced.com/cdn/shop/t/53/assets/GT-America-Standard-Medium.woff2?v=8479809107748873691773860597")
+    format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT America";
+  src: url("https://shop.enhanced.com/cdn/shop/t/53/assets/GT-America-Standard-Bold.woff2?v=171388702544599635541773860597")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT America Extended";
+  src: url("https://shop.enhanced.com/cdn/shop/t/53/assets/GT-America-Extended-Bold.woff2?v=4119962383453379611773860597")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-gt-america);
+}

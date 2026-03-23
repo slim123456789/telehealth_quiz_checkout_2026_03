@@ -1,0 +1,10 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="720" fill="#EFF6FF"/>
+  <rect x="120" y="120" width="960" height="480" rx="32" fill="white"/>
+  <rect x="180" y="180" width="240" height="360" rx="24" fill="#0EA5E9"/>
+  <rect x="215" y="230" width="170" height="70" rx="12" fill="white" fill-opacity="0.9"/>
+  <rect x="220" y="310" width="160" height="10" rx="5" fill="white" fill-opacity="0.75"/>
+  <rect x="220" y="336" width="132" height="10" rx="5" fill="white" fill-opacity="0.75"/>
+  <text x="490" y="305" fill="#0F172A" font-size="54" font-family="Avenir Next, Arial, sans-serif" font-weight="700">Enclomiphene</text>
+  <text x="490" y="360" fill="#0369A1" font-size="34" font-family="Avenir Next, Arial, sans-serif">Androgen Lane</text>
+</svg>
