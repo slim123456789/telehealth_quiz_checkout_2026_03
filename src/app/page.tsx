@@ -287,11 +287,7 @@ export default function Home() {
               TAILORED FOR YOUR BIOLOGY & GOALS
             </p>
             <h1 className="mt-3 text-[28px] leading-[1.06] [font-family:var(--font-gt-america-extended)] lg:text-[56px]">
-              CHOOSE YOUR
-              <br />
-              PERSONALIZED
-              <br />
-              PROTOCOL
+             YOUR PERSONALIZED PROTOCOL
             </h1>
           </div>
           <div className="p-5 lg:px-12 lg:py-8">
