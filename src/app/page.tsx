@@ -277,7 +277,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#fcfcfa]">
-      <main className="mx-auto flex w-full max-w-md flex-col gap-4 px-3 pb-32 pt-3 lg:max-w-none lg:gap-7 lg:px-2 lg:pb-24 lg:pt-6 xl:px-3">
+      <main className="mx-auto flex w-full max-w-md flex-col gap-4 px-3 pb-32 pt-3 lg:max-w-none lg:gap-7 lg:px-2 lg:pb-24 lg:pt-2 xl:px-3">
         <section className="rounded-[24px] border border-black/10 bg-white">
           <div className="bg-black px-5 py-6 text-white lg:px-12 lg:py-10">
             <p className="text-[16px] uppercase tracking-[0.22em] lg:text-[20px]">
@@ -290,7 +290,7 @@ export default function Home() {
              YOUR PERSONALIZED PROTOCOL
             </h1>
           </div>
-          <div className="p-5 lg:px-12 lg:py-8">
+          <div className="px-5 pb-5 pt-4 lg:px-12 lg:pb-8 lg:pt-6">
             <div
               ref={builderRef}
               id="protocol-builder"
@@ -324,7 +324,7 @@ export default function Home() {
 
                 return (
                   <div key={product.id} className="flex flex-col gap-1.5 lg:gap-2.5">
-                    <div className="border-l-2 border-[#0033FF] px-1 pl-2">
+                    <div className="border-l-[4px] border-[#0033FF] px-1 pl-2">
                       <p className="text-[9px] uppercase tracking-[0.16em] text-black/55 lg:text-[11px]">
                         Recommended
                       </p>
@@ -464,7 +464,7 @@ export default function Home() {
           <h2 className="text-[20px] leading-tight [font-family:var(--font-gt-america-extended)] lg:text-[34px]">
             ADVISORY TEAM
           </h2>
-          <p className="mt-2 text-sm text-black/70 lg:text-[15px]">
+          <p className="mt-2 text-sm text-black/70 lg:text-[18px]">
             The experts ensuring safety, efficacy, and science-backed results.
           </p>
           <div className="mt-3 space-y-3 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0 xl:grid-cols-3">
