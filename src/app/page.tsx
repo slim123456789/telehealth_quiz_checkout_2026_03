@@ -326,7 +326,7 @@ export default function Home() {
                   <div key={product.id} className="flex flex-col gap-1.5 lg:gap-2.5">
                     <div className="border-l-2 border-[#0033FF] px-1 pl-2">
                       <p className="text-[9px] uppercase tracking-[0.16em] text-black/55 lg:text-[11px]">
-                        Recommended Path
+                        Recommended
                       </p>
                       <p className="mt-0.5 text-[12px] leading-tight uppercase tracking-[0.08em] [font-family:var(--font-gt-america-extended)] text-black lg:text-[17px]">
                         {product.focus}
@@ -356,79 +356,19 @@ export default function Home() {
                       </p>
                       <div className="mt-2">
                         <div className="flex items-center gap-2">
-                          <p className="text-base font-semibold text-black lg:text-[26px]">
-                            ${cyclePrice}
-                          </p>
                           {cyclePrice < cycleListPrice ? (
-                            <p className="text-xs text-black/50 line-through lg:text-sm">
+                            <p className="text-base font-semibold text-black/45 line-through lg:text-[26px]">
                               ${cycleListPrice}
                             </p>
                           ) : null}
+                          <p className="text-base font-semibold text-black lg:text-[26px]">
+                            ${cyclePrice}
+                          </p>
                           {selectedBillingOption.discount > 0 ? (
                             <span className="whitespace-nowrap rounded-full bg-[rgba(0,51,255,0.12)] px-2 py-1 text-[9px] leading-none uppercase tracking-[0.08em] text-[#0033FF] lg:text-[11px]">
                               {Math.round(selectedBillingOption.discount * 100)}%
                               Off
                             </span>
-                          ) : null}
-                        </div>
-                        <label className="mt-1 block text-[10px] uppercase tracking-[0.1em] text-black/55 lg:text-[11px]">
-                          Billing cycle
-                        </label>
-                        <div
-                          className="relative mt-1"
-                          onBlur={(event) => {
-                            const nextTarget = event.relatedTarget as Node | null;
-                            if (!event.currentTarget.contains(nextTarget)) {
-                              setOpenBillingDropdownFor((current) =>
-                                current === product.id ? null : current
-                              );
-                            }
-                          }}
-                        >
-                          <button
-                            type="button"
-                            className="flex w-full items-center justify-between rounded-xl border border-black/20 bg-white px-3 py-2 text-sm [font-family:var(--font-gt-america)] text-black lg:text-[17px]"
-                            onClick={() =>
-                              setOpenBillingDropdownFor((current) =>
-                                current === product.id ? null : product.id
-                              )
-                            }
-                            aria-haspopup="listbox"
-                            aria-expanded={isBillingOpen}
-                          >
-                            <span>{selectedBillingOption.label}</span>
-                            <span className="text-black/65">⌄</span>
-                          </button>
-                          {isBillingOpen ? (
-                            <div
-                              role="listbox"
-                              className="absolute left-0 right-0 top-[calc(100%+0.35rem)] overflow-hidden rounded-xl border border-[#0033FF]/25 bg-white shadow-[0_14px_28px_-20px_rgba(0,51,255,0.85)]"
-                            >
-                              {BILLING_OPTIONS.map((option) => {
-                                const isActive = option.value === selectedCycle;
-                                return (
-                                  <button
-                                    key={option.value}
-                                    type="button"
-                                    className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm [font-family:var(--font-gt-america)] ${
-                                      isActive
-                                        ? "bg-[rgba(0,51,255,0.12)] text-[#0033FF]"
-                                        : "bg-white text-black hover:bg-[#f4f7ff]"
-                                    }`}
-                                    onClick={() => {
-                                      setBillingByProduct((current) => ({
-                                        ...current,
-                                        [product.id]: option.value,
-                                      }));
-                                      setOpenBillingDropdownFor(null);
-                                    }}
-                                  >
-                                    <span>{option.label}</span>
-                                    {isActive ? <span>✓</span> : null}
-                                  </button>
-                                );
-                              })}
-                            </div>
                           ) : null}
                         </div>
                       </div>
@@ -451,6 +391,66 @@ export default function Home() {
                         >
                           {isSelected ? "Added" : "Select"}
                         </button>
+                      </div>
+                      <label className="mt-2 block text-[10px] uppercase tracking-[0.1em] text-black/55 lg:text-[11px]">
+                        Billing cycle
+                      </label>
+                      <div
+                        className="relative mt-1"
+                        onBlur={(event) => {
+                          const nextTarget = event.relatedTarget as Node | null;
+                          if (!event.currentTarget.contains(nextTarget)) {
+                            setOpenBillingDropdownFor((current) =>
+                              current === product.id ? null : current
+                            );
+                          }
+                        }}
+                      >
+                        <button
+                          type="button"
+                          className="flex w-full items-center justify-between rounded-xl border border-black/20 bg-white px-3 py-2 text-sm [font-family:var(--font-gt-america)] text-black lg:text-[17px]"
+                          onClick={() =>
+                            setOpenBillingDropdownFor((current) =>
+                              current === product.id ? null : product.id
+                            )
+                          }
+                          aria-haspopup="listbox"
+                          aria-expanded={isBillingOpen}
+                        >
+                          <span>{selectedBillingOption.label}</span>
+                          <span className="text-black/65">⌄</span>
+                        </button>
+                        {isBillingOpen ? (
+                          <div
+                            role="listbox"
+                            className="absolute left-0 right-0 top-[calc(100%+0.35rem)] overflow-hidden rounded-xl border border-[#0033FF]/25 bg-white shadow-[0_14px_28px_-20px_rgba(0,51,255,0.85)]"
+                          >
+                            {BILLING_OPTIONS.map((option) => {
+                              const isActive = option.value === selectedCycle;
+                              return (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm [font-family:var(--font-gt-america)] ${
+                                    isActive
+                                      ? "bg-[rgba(0,51,255,0.12)] text-[#0033FF]"
+                                      : "bg-white text-black hover:bg-[#f4f7ff]"
+                                  }`}
+                                  onClick={() => {
+                                    setBillingByProduct((current) => ({
+                                      ...current,
+                                      [product.id]: option.value,
+                                    }));
+                                    setOpenBillingDropdownFor(null);
+                                  }}
+                                >
+                                  <span>{option.label}</span>
+                                  {isActive ? <span>✓</span> : null}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ) : null}
                       </div>
                     </article>
                   </div>
