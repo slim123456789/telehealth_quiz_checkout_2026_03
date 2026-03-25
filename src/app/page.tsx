@@ -17,6 +17,8 @@ type Product = {
   education: string;
   image: string;
   imageAlt: string;
+  matchedInputs: string[];
+  rationale: string;
 };
 
 const BILLING_OPTIONS: {
@@ -50,6 +52,9 @@ const PRODUCTS: Product[] = [
       "Enclomiphene is commonly used in male hormone optimization protocols to support endogenous testosterone production under clinician supervision.",
     image: "/medications/Enclomiphene.png",
     imageAlt: "Enclomiphene medication card image",
+    matchedInputs: ["Lower energy", "Preserve fertility", "Avoid injections"],
+    rationale:
+      "Based on your goals and preferences, this option supports testosterone optimization while preserving flexibility for fertility-focused planning.",
   },
   {
     id: "metabolic-tirzepatide",
@@ -68,6 +73,13 @@ const PRODUCTS: Product[] = [
       "Tirzepatide can support satiety and metabolic control. Dosing and progression are individualized to reduce side effects and maximize consistency.",
     image: "/medications/Tirzepatide.png",
     imageAlt: "Tirzepatide medication card image",
+    matchedInputs: [
+      "Body-fat reduction goal",
+      "Appetite support priority",
+      "Metabolic lane selected",
+    ],
+    rationale:
+      "This was recommended to match your body-composition and appetite-control priorities with a clinician-guided metabolic pathway.",
   },
   {
     id: "recovery-sermorelin",
@@ -86,6 +98,13 @@ const PRODUCTS: Product[] = [
       "Sermorelin is a growth-hormone releasing hormone analog that may support recovery and sleep quality as part of comprehensive wellness plans.",
     image: "/medications/Sermorelin.jpg",
     imageAlt: "Sermorelin medication card image",
+    matchedInputs: [
+      "Improve sleep",
+      "Improve recovery from workouts",
+      "Gentler support style",
+    ],
+    rationale:
+      "This recommendation aligns with your recovery and sleep goals through a more gradual support profile often used in recovery protocols.",
   },
   {
     id: "recovery-tesamorelin",
@@ -104,6 +123,13 @@ const PRODUCTS: Product[] = [
       "Tesamorelin is used in targeted body-composition protocols, and low-dose tadalafil is often selected to support vascular function and performance confidence.",
     image: "/medications/tesamorelin-tadalafil.jpg",
     imageAlt: "Tesamorelin and tadalafil medication card image",
+    matchedInputs: [
+      "Better blood flow and training support",
+      "Performance consistency focus",
+      "Recovery lane selected",
+    ],
+    rationale:
+      "This option was included to support blood-flow and training consistency based on your selected recovery-focused performance priorities.",
   },
 ];
 
@@ -457,6 +483,69 @@ export default function Home() {
                 );
             })}
             </div>
+          </div>
+        </section>
+
+        <section className="rounded-[24px] border border-black/10 bg-white p-4 lg:p-6">
+          <h2 className="text-[20px] leading-tight [font-family:var(--font-gt-america-extended)] lg:text-[34px]">
+            WHY THESE WERE RECOMMENDED
+          </h2>
+          <p className="mt-2 max-w-[90ch] text-sm text-black/70 lg:text-[18px]">
+            Your recommendations are mapped to the goals, symptoms, and style
+            preferences you selected in the quiz.
+          </p>
+          <div className="mt-4 grid gap-3 lg:grid-cols-2 lg:gap-4">
+            {PRODUCTS.map((product) => {
+              const isSelected = selectedIds.includes(product.id);
+
+              return (
+                <article
+                  key={`${product.id}-reason`}
+                  className={`rounded-[16px] border bg-white p-3 transition lg:p-4 ${
+                    isSelected
+                      ? "border-[#0033FF]/35 shadow-[0_0_0_1px_rgba(0,51,255,0.18)]"
+                      : "border-[#0033FF]/15"
+                  }`}
+                >
+                  <div className="border-l-[4px] border-[#0033FF] pl-2">
+                    <p className="text-[9px] uppercase tracking-[0.16em] text-black/55 lg:text-[11px]">
+                      Recommendation Reason
+                    </p>
+                    <h3 className="mt-0.5 text-[15px] leading-tight [font-family:var(--font-gt-america-extended)] lg:text-[22px]">
+                      {product.name}
+                    </h3>
+                  </div>
+                  <p className="mt-2 text-[9px] uppercase tracking-[0.16em] text-black/55 lg:text-[10px]">
+                    You Indicated
+                  </p>
+                  <div className="mt-1.5 flex flex-wrap gap-1.5">
+                    {product.matchedInputs.map((input) => (
+                      <span
+                        key={`${product.id}-insight-${input}`}
+                        className="inline-flex items-center gap-1 rounded-full border border-[#0033FF]/25 bg-[rgba(0,51,255,0.1)] px-2.5 py-1 text-[10px] leading-none text-[#0033FF] lg:text-[11px]"
+                      >
+                        <span className="text-[9px]">✓</span>
+                        {input}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-[12px] leading-relaxed text-black/72 lg:text-[15px]">
+                    {product.rationale}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => toggleProduct(product.id)}
+                    className={`mt-3 w-full rounded-full border px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] transition lg:text-[12px] ${
+                      isSelected
+                        ? "border-[#0033FF] bg-[#0033FF] text-white"
+                        : "border-[#0033FF] bg-white text-[#0033FF]"
+                    }`}
+                  >
+                    {isSelected ? "Added" : "Select"}
+                  </button>
+                </article>
+              );
+            })}
           </div>
         </section>
 
