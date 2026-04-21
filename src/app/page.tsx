@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 type BillingCycle = "monthly" | "quarterly" | "semiannual" | "yearly";
 
@@ -135,27 +135,6 @@ const HERO_SOCIAL_PROOF = [
   },
 ];
 
-const WHY_RECOMMENDED_CAROUSEL = [
-  {
-    productId: "androgen-enclomiphene",
-    image: "/zRdzF7z2Kdpw1lpGFE1CWjQI4.jpg",
-    headline: "Sharper Focus. Clearer Thinking.",
-    body: "Your answers indicated energy and performance support needs. This protocol is selected to help improve consistency and cognitive sharpness.",
-  },
-  {
-    productId: "metabolic-tirzepatide",
-    image: "/zPaxSJTMq4VBXCDxjBh1nlXMf5g.jpg",
-    headline: "Sustained Energy Without the Crash",
-    body: "Based on your body-composition and appetite goals, this recommendation supports steadier daily momentum with clinician-guided dosing.",
-  },
-  {
-    productId: "recovery-sermorelin",
-    image: "/ZaP0NYNBmiEfClMDe6Jrk3LfOm4.jpg",
-    headline: "Restore Your Drive and Confidence.",
-    body: "Recovery and sleep priorities in your responses mapped to this option for more resilient training and better day-to-day readiness.",
-  },
-];
-
 const ADVISORS = [
   {
     name: "Dr. Jonathann Kuo, MD",
@@ -231,6 +210,16 @@ const FAQS = [
 ];
 
 const SHOW_PRODUCT_BENEFITS = false;
+const WHY_MED_TAGS: Record<string, string> = {
+  "androgen-enclomiphene": "Lower libido",
+  "metabolic-tirzepatide": "Maximum average weight loss",
+  "recovery-sermorelin": "Better sleep and recovery",
+};
+const WHY_MED_ICONS: Record<string, string> = {
+  "androgen-enclomiphene": "/medications/enclomiphene-transparent.png",
+  "metabolic-tirzepatide": "/medications/tirzepatide-transparent.png",
+  "recovery-sermorelin": "/medications/sermorelin-transparent.png",
+};
 
 const getBillingOption = (cycle: BillingCycle) =>
   BILLING_OPTIONS.find((option) => option.value === cycle) ?? BILLING_OPTIONS[0];
@@ -263,10 +252,7 @@ export default function Home() {
     )
   );
   const builderRef = useRef<HTMLDivElement>(null);
-  const whyCarouselRef = useRef<HTMLDivElement>(null);
-  const whySlideRefs = useRef<Array<HTMLElement | null>>([]);
-  const skipCenterOnNextWhyActiveRef = useRef(false);
-  const [activeWhySlide, setActiveWhySlide] = useState(0);
+  const [openWhyProductId, setOpenWhyProductId] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const selectedProducts = useMemo(
@@ -355,87 +341,6 @@ export default function Home() {
     () => PRODUCTS.filter((product) => !selectedIds.includes(product.id)),
     [selectedIds]
   );
-
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      setActiveWhySlide((current) =>
-        (current + 1) % WHY_RECOMMENDED_CAROUSEL.length
-      );
-    }, 4200);
-
-    return () => window.clearInterval(id);
-  }, []);
-
-  useEffect(() => {
-    const container = whyCarouselRef.current;
-    const slideEl = whySlideRefs.current[activeWhySlide];
-    if (!container || !slideEl) {
-      return;
-    }
-    if (skipCenterOnNextWhyActiveRef.current) {
-      skipCenterOnNextWhyActiveRef.current = false;
-      return;
-    }
-
-    // Center the active slide to avoid partial clipping from rough offsets.
-    const centeredLeft =
-      slideEl.offsetLeft - (container.clientWidth - slideEl.clientWidth) / 2;
-    const maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
-    const targetLeft = Math.min(maxScrollLeft, Math.max(0, centeredLeft));
-    container.scrollTo({ left: targetLeft, behavior: "smooth" });
-  }, [activeWhySlide]);
-
-  useEffect(() => {
-    const container = whyCarouselRef.current;
-    if (!container) {
-      return;
-    }
-
-    let rafId = 0;
-    const updateActiveFromScroll = () => {
-      const viewportCenter = container.scrollLeft + container.clientWidth / 2;
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
-
-      WHY_RECOMMENDED_CAROUSEL.forEach((_, index) => {
-        const slide = whySlideRefs.current[index];
-        if (!slide) {
-          return;
-        }
-        const slideCenter = slide.offsetLeft + slide.clientWidth / 2;
-        const distance = Math.abs(slideCenter - viewportCenter);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      setActiveWhySlide((current) => {
-        if (current === closestIndex) {
-          return current;
-        }
-        skipCenterOnNextWhyActiveRef.current = true;
-        return closestIndex;
-      });
-    };
-
-    const onScroll = () => {
-      if (rafId) {
-        window.cancelAnimationFrame(rafId);
-      }
-      rafId = window.requestAnimationFrame(updateActiveFromScroll);
-    };
-
-    container.addEventListener("scroll", onScroll, { passive: true });
-    updateActiveFromScroll();
-
-    return () => {
-      container.removeEventListener("scroll", onScroll);
-      if (rafId) {
-        window.cancelAnimationFrame(rafId);
-      }
-    };
-  }, []);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#f5f5f7]">
@@ -773,6 +678,12 @@ export default function Home() {
         </section>
 
         <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-3 lg:p-4">
+          <h2 className="text-[20px] leading-tight [font-family:var(--font-gt-america-extended)] text-[#181c23] lg:text-[34px]">
+            Real Results, Verified Members
+          </h2>
+          <p className="mt-2 text-sm text-[#575757] lg:text-[16px]">
+            See what members are saying about their results with Enhanced.
+          </p>
           <div className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-2 lg:gap-4 lg:overflow-visible lg:pb-0">
             {HERO_SOCIAL_PROOF.map((item) => (
               <article
@@ -796,7 +707,124 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto hidden w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-3 lg:block lg:p-4">
+        <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-3 lg:p-4">
+          <h2 className="text-[20px] leading-tight [font-family:var(--font-gt-america-extended)] lg:text-[34px]">
+            WHY THESE WERE RECOMMENDED
+          </h2>
+          <p className="mt-2 max-w-[90ch] text-sm text-[#575757] lg:text-[16px]">
+            Your recommendations are mapped to the goals, symptoms, and style
+            preferences you selected in the quiz.
+          </p>
+          <div className="mt-4 space-y-3">
+            {PRODUCTS.map((product) => {
+              const isOpen = openWhyProductId === product.id;
+              return (
+                <article
+                  key={`why-med-${product.id}`}
+                  className="overflow-hidden rounded-[14px] border border-[#e2e2e2] bg-[#f7f7f8]"
+                >
+                  <button
+                    type="button"
+                    className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left lg:px-5 lg:py-4"
+                    onClick={() =>
+                      setOpenWhyProductId((current) =>
+                        current === product.id ? null : product.id
+                      )
+                    }
+                    aria-expanded={isOpen}
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md lg:h-16 lg:w-16">
+                        <Image
+                          src={WHY_MED_ICONS[product.id] ?? product.image}
+                          alt={`${product.name} icon`}
+                          fill
+                          sizes="(max-width: 1024px) 56px, 64px"
+                          className={`object-contain ${
+                            product.id === "androgen-enclomiphene"
+                              ? "scale-[1.9]"
+                              : "scale-150"
+                          }`}
+                        />
+                      </span>
+                      <span className="flex min-w-0 flex-col items-start gap-1 lg:flex-row lg:items-center lg:gap-2">
+                        <span className="text-[14px] font-semibold leading-tight [font-family:var(--font-gt-america)] text-[#181c23] lg:text-[20px]">
+                          {product.name}
+                        </span>
+                        <span className="max-w-full rounded-full bg-[rgba(0,51,255,0.12)] px-2 py-1 text-[9px] leading-tight normal-case tracking-[0.03em] text-[#0033FF] lg:text-[11px] lg:leading-none lg:uppercase lg:tracking-[0.08em]">
+                          ✓ {WHY_MED_TAGS[product.id]}
+                        </span>
+                      </span>
+                    </span>
+                    <span className="shrink-0 text-[24px] leading-none text-[#575757]">
+                      {isOpen ? "−" : "+"}
+                    </span>
+                  </button>
+                  {isOpen ? (
+                    <div className="border-t border-[#e2e2e2] px-4 py-3 lg:px-5 lg:py-4">
+                      <p className="text-[13px] leading-relaxed text-[#383838] lg:text-[15px]">
+                        {product.rationale}
+                      </p>
+                    </div>
+                  ) : null}
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-4 lg:p-6">
+          <h2 className="text-center text-[34px] leading-[0.98] text-[#181c23] [font-family:var(--font-ps-times)] lg:text-[56px]">
+            We Stand Behind Every Protocol.
+          </h2>
+          <p className="mx-auto mt-3 max-w-[760px] text-center text-[14px] leading-snug text-[#575757] lg:text-[18px]">
+            Every Enhanced protocol is overseen by our Independent Medical Commission.
+            World-class clinicians and scientists ensuring safety, efficacy, and scientific rigor at every step.
+          </p>
+          <div className="mt-5 flex w-full snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-7 lg:grid lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:pb-0">
+            {ADVISORS.map((advisor, index) => (
+              <article
+                key={`advisor-${advisor.name}`}
+                className="h-full min-w-[88%] snap-center lg:min-w-0"
+              >
+                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[16px] bg-[#f5f5f7]">
+                  <Image
+                    src={advisor.image}
+                    alt={`${advisor.name} profile`}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 32vw"
+                    className="object-cover"
+                  />
+                </div>
+                <h3 className="mt-3 text-[17px] [font-family:var(--font-gt-america-extended)] text-[#181c23] lg:text-[20px]">
+                  {advisor.name}
+                </h3>
+                <p className="text-[14px] text-[#181c23] lg:text-[17px]">{advisor.title}</p>
+                {index === 1 && advisor.quote ? (
+                  <>
+                    <blockquote className="mt-3 border-l-[4px] border-[#d9d9d9] pl-3 text-[14px] leading-snug text-[#181c23] lg:mt-4 lg:pl-4 lg:text-[18px]">
+                      &quot;{advisor.quote}&quot;
+                    </blockquote>
+                    <p className="mt-2 text-[12px] text-[#575757] lg:text-[14px]">
+                      - {advisor.quoteAttribution}
+                    </p>
+                  </>
+                ) : (
+                  <ul className="mt-3 space-y-2 text-[14px] text-[#181c23] lg:mt-4 lg:text-[16px]">
+                    {advisor.highlights?.map((item) => (
+                      <li key={`${advisor.name}-${item}`} className="flex items-start gap-2">
+                        <span className="text-[#575757]">+</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-3 lg:p-4">
           <div className="px-2 pb-2 pt-2 lg:px-6 lg:pb-2 lg:pt-3">
             <div
               className="sr-only"
@@ -881,8 +909,8 @@ export default function Home() {
                           </p>
                           {selectedBillingOption.discount > 0 ? (
                             <span className="whitespace-nowrap rounded-full bg-[rgba(0,51,255,0.12)] px-2 py-1 text-[9px] leading-none uppercase tracking-[0.08em] text-[#0033FF] lg:text-[11px]">
-                              {Math.round(selectedBillingOption.discount * 100)}%
-                              Off
+                              ✓ {Math.round(selectedBillingOption.discount * 100)}%
+                              OFF
                             </span>
                           ) : null}
                         </div>
@@ -963,137 +991,6 @@ export default function Home() {
                 );
             })}
             </div>
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-3 lg:p-4">
-          <h2 className="text-[20px] leading-tight [font-family:var(--font-gt-america-extended)] lg:text-[34px]">
-            WHY THESE WERE RECOMMENDED
-          </h2>
-          <p className="mt-2 max-w-[90ch] text-sm text-[#575757] lg:text-[16px]">
-            Your recommendations are mapped to the goals, symptoms, and style
-            preferences you selected in the quiz.
-          </p>
-          <div
-            ref={whyCarouselRef}
-            className="mt-3 w-full overflow-x-auto overscroll-x-contain pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            <div className="flex snap-x snap-mandatory gap-3 lg:gap-4">
-              {WHY_RECOMMENDED_CAROUSEL.map((slide, index) => {
-                const product = PRODUCTS.find((item) => item.id === slide.productId);
-                if (!product) {
-                  return null;
-                }
-
-                const distance = Math.min(
-                  (index - activeWhySlide + WHY_RECOMMENDED_CAROUSEL.length) %
-                    WHY_RECOMMENDED_CAROUSEL.length,
-                  (activeWhySlide - index + WHY_RECOMMENDED_CAROUSEL.length) %
-                    WHY_RECOMMENDED_CAROUSEL.length
-                );
-
-                return (
-                  <article
-                    key={`reason-carousel-${product.id}`}
-                    ref={(el) => {
-                      whySlideRefs.current[index] = el;
-                    }}
-                    className={`min-w-[84%] snap-center rounded-[16px] bg-white transition duration-500 lg:min-w-[56%] xl:min-w-[48%] ${
-                      distance === 0
-                        ? "opacity-100"
-                        : distance === 1
-                          ? "opacity-45"
-                          : "opacity-25"
-                    }`}
-                  >
-                    <div className="relative aspect-[16/8.5] w-full overflow-hidden rounded-[14px]">
-                      <Image
-                        src={slide.image}
-                        alt={`${product.name} lifestyle`}
-                        fill
-                        sizes="(max-width: 1024px) 88vw, 800px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <h3 className="text-[24px] leading-tight [font-family:var(--font-gt-america-extended)] lg:text-[34px]">
-                        {product.name}
-                      </h3>
-                      <p className="mt-2 text-[13px] leading-relaxed text-[#383838] lg:text-[15px]">
-                        {slide.body}
-                      </p>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-            <div className="mt-4 flex gap-2">
-              {WHY_RECOMMENDED_CAROUSEL.map((slide, index) => {
-                const isActive = index === activeWhySlide;
-                return (
-                  <button
-                    key={`reason-indicator-${slide.productId}`}
-                    type="button"
-                    onClick={() => setActiveWhySlide(index)}
-                    className={`h-1.5 rounded-full transition ${
-                      isActive ? "w-12 bg-black" : "w-7 bg-black/20"
-                    }`}
-                    aria-label={`Show slide ${index + 1}`}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-4 lg:p-6">
-          <h2 className="text-center text-[34px] leading-[0.98] text-[#181c23] [font-family:var(--font-ps-times)] lg:text-[56px]">
-            We Stand Behind Every Protocol.
-          </h2>
-          <p className="mx-auto mt-3 max-w-[760px] text-center text-[14px] leading-snug text-[#575757] lg:text-[18px]">
-            Every Enhanced protocol is overseen by our Independent Medical Commission.
-            World-class clinicians and scientists ensuring safety, efficacy, and scientific rigor at every step.
-          </p>
-          <div className="mt-5 flex w-full snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-7 lg:grid lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:pb-0">
-            {ADVISORS.map((advisor, index) => (
-              <article
-                key={`advisor-${advisor.name}`}
-                className="h-full min-w-[88%] snap-center lg:min-w-0"
-              >
-                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[16px] bg-[#f5f5f7]">
-                  <Image
-                    src={advisor.image}
-                    alt={`${advisor.name} profile`}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 32vw"
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="mt-3 text-[17px] [font-family:var(--font-gt-america-extended)] text-[#181c23] lg:text-[20px]">
-                  {advisor.name}
-                </h3>
-                <p className="text-[14px] text-[#181c23] lg:text-[17px]">{advisor.title}</p>
-                {index === 1 && advisor.quote ? (
-                  <>
-                    <blockquote className="mt-3 border-l-[4px] border-[#d9d9d9] pl-3 text-[14px] leading-snug text-[#181c23] lg:mt-4 lg:pl-4 lg:text-[18px]">
-                      &quot;{advisor.quote}&quot;
-                    </blockquote>
-                    <p className="mt-2 text-[12px] text-[#575757] lg:text-[14px]">
-                      - {advisor.quoteAttribution}
-                    </p>
-                  </>
-                ) : (
-                  <ul className="mt-3 space-y-2 text-[14px] text-[#181c23] lg:mt-4 lg:text-[16px]">
-                    {advisor.highlights?.map((item) => (
-                      <li key={`${advisor.name}-${item}`} className="flex items-start gap-2">
-                        <span className="text-[#575757]">+</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </article>
-            ))}
           </div>
         </section>
 
