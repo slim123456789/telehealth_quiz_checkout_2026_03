@@ -137,19 +137,19 @@ const HERO_SOCIAL_PROOF = [
   {
     title: "Doubled Free Testosterone",
     quote:
-      "Three months in with another TRT provider, I was injecting and seeing marginal results. I switched to Enhanced, the bloodwork process was seamless, and I got more information in my first consultation than I'd had in months elsewhere. At my follow-up, my free testosterone had doubled.",
+      "Switched to Enhanced after months of minimal results elsewhere. The process was seamless, and my free testosterone doubled within three months.",
     author: "Samuel, 43",
   },
   {
     title: "Proven by Bloodwork",
     quote:
-      "Enhanced has been a great experience, from ease of use to quick and responsive customer support. Scheduling blood tests, getting results, and meeting with the physician have been seamless. I've noticed a difference in energy and strength since being on enclomiphene, and the best part is I have bloodwork to support it.",
+      "Easy process, fast support, and real results. Noticed clear improvements in energy and strength, backed by bloodwork.",
     author: "Cesar, 24",
   },
   {
     title: "Easy at Home",
     quote:
-      "I've been using injectable NAD+ for close to a month now and it's been a really positive experience. The injections are quick, painless, and simple to do at home. No negative side effects at all, and customer support has been excellent from day one.",
+      "Quick, painless, and easy to do at home. Great experience from day one, with fast shipping and strong support.",
     author: "Anthony, 25",
   },
   {
@@ -218,6 +218,49 @@ const ADVISORS = [
   },
 ];
 
+const FAQS = [
+  {
+    question: "How are these recommendations chosen?",
+    answer:
+      "Your protocol is matched to the goals, preferences, and health indicators you selected in the assessment. A licensed physician reviews your full health profile before anything is prescribed or shipped.",
+  },
+  {
+    question: "Do I have to take everything that's recommended?",
+    answer:
+      "No. You can select one product, two, or all three. Your protocol is flexible - start with what feels right and add more later if you want.",
+  },
+  {
+    question: "What happens after I select?",
+    answer:
+      "You'll need to complete checkout. After that, you complete a medical questionnaire that a licensed physician reviews to determine if medication is appropriate for you. If approved, your protocol ships in 3-5 business days.",
+  },
+  {
+    question: "What if I'm not approved?",
+    answer:
+      "You get a full refund. No questions asked. If a clinician determines a medication isn't right for you, you pay nothing.",
+  },
+  {
+    question: "How is dosing determined?",
+    answer:
+      "Your clinician sets your dosing based on your health profile and goals. For testosterone and enclomiphene, dosing is calibrated to your bloodwork - which is included at no extra cost.",
+  },
+  {
+    question: "Can I change or cancel my protocol later?",
+    answer:
+      "Yes. You can adjust your products, pause, or cancel anytime.",
+  },
+  {
+    question: "Who are the doctors behind Enhanced?",
+    answer:
+      "Your protocol is informed by an advisory team that includes Dr. Jonathann Kuo, MD (50,000+ patients, regenerative and longevity medicine) and Dr. Abud Bakri, MD (performance and peptide expert, endorsed by Andrew Huberman, Ph.D.).",
+  },
+  {
+    question: "How fast does shipping take?",
+    answer:
+      "Priority shipping is included with every order. Most protocols arrive within 3-5 business days.",
+  },
+];
+
 const SHOW_PRODUCT_BENEFITS = false;
 
 const getBillingOption = (cycle: BillingCycle) =>
@@ -255,6 +298,7 @@ export default function Home() {
   const whySlideRefs = useRef<Array<HTMLElement | null>>([]);
   const skipCenterOnNextWhyActiveRef = useRef(false);
   const [activeWhySlide, setActiveWhySlide] = useState(0);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const selectedProducts = useMemo(
     () => PRODUCTS.filter((product) => selectedIds.includes(product.id)),
@@ -447,15 +491,15 @@ export default function Home() {
                 <ul className="mt-4 space-y-2 text-[16px] text-[#181c23] lg:mt-5 lg:text-[17px]">
                   <li className="flex items-start gap-2">
                     <span className="text-[#0033FF]">+</span>
-                    <span>Physician-designed protocols personalized to your bloodwork</span>
+                    <span>Feel results in 2-4 weeks</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[#0033FF]">+</span>
-                    <span>Protocol designed to support energy, fat loss and strength</span>
+                    <span>Increase energy, drive, & strength</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[#0033FF]">+</span>
-                    <span>Exclusive access to the ultimate peptide gudie</span>
+                    <span>Boost your testosterone levels</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[#0033FF]">+</span>
@@ -940,6 +984,50 @@ export default function Home() {
                 )}
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-4 lg:p-5">
+          <p className="text-center text-[12px] text-[#f15c22] [font-family:var(--font-gt-america)] lg:text-[14px]">
+            Everything you need to know.
+          </p>
+          <h2 className="mx-auto mt-1 max-w-[620px] text-center text-[30px] leading-[0.98] [font-family:var(--font-gt-america-extended)] text-[#181c23] lg:text-[44px]">
+            Frequently asked questions
+          </h2>
+
+          <div className="mx-auto mt-4 w-full max-w-[760px] space-y-3 lg:mt-5 lg:space-y-3">
+            {FAQS.map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <article
+                  key={`faq-${faq.question}`}
+                  className="overflow-hidden rounded-[16px] border border-transparent bg-[#f5f5f7]"
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenFaqIndex((current) => (current === index ? null : index))
+                    }
+                    className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left lg:px-5 lg:py-5"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="text-[17px] leading-tight text-[#232323] [font-family:var(--font-gt-america)] lg:text-[22px]">
+                      {faq.question}
+                    </span>
+                    <span className="shrink-0 text-[30px] leading-none text-[#9b9b9b] lg:text-[36px]">
+                      {isOpen ? "−" : "+"}
+                    </span>
+                  </button>
+                  {isOpen ? (
+                    <div className="px-4 pb-4 pt-0 lg:px-5 lg:pb-5">
+                      <p className="text-[13px] leading-relaxed text-[#575757] [font-family:var(--font-gt-america)] lg:text-[15px]">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  ) : null}
+                </article>
+              );
+            })}
           </div>
         </section>
 
