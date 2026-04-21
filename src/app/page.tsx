@@ -106,31 +106,6 @@ const PRODUCTS: Product[] = [
     rationale:
       "This recommendation aligns with your recovery and sleep goals through a more gradual support profile often used in recovery protocols.",
   },
-  {
-    id: "recovery-tesamorelin",
-    name: "Tadalafil",
-    lane: "Recovery / GHRH Lane",
-    focus: "Recovery / GHRH",
-    price: 249,
-    cadence: "Monthly",
-    highlight:
-      "Supports blood flow and muscle fullness during training.",
-    benefits: [
-      "Supports body-composition goals",
-      "Supports blood-flow and training consistency",
-    ],
-    education:
-      "Tesamorelin is used in targeted body-composition protocols, and low-dose tadalafil is often selected to support vascular function and performance confidence.",
-    image: "/medications/tesamorelin-tadalafil.jpg",
-    imageAlt: "Tesamorelin and tadalafil medication card image",
-    matchedInputs: [
-      "Better blood flow and training support",
-      "Performance consistency focus",
-      "Recovery lane selected",
-    ],
-    rationale:
-      "This option was included to support blood-flow and training consistency based on your selected recovery-focused performance priorities.",
-  },
 ];
 
 const HERO_SOCIAL_PROOF = [
@@ -178,12 +153,6 @@ const WHY_RECOMMENDED_CAROUSEL = [
     image: "/ZaP0NYNBmiEfClMDe6Jrk3LfOm4.jpg",
     headline: "Restore Your Drive and Confidence.",
     body: "Recovery and sleep priorities in your responses mapped to this option for more resilient training and better day-to-day readiness.",
-  },
-  {
-    productId: "recovery-tesamorelin",
-    image: "/URqZwtsHAxCJZBV5acsRAo6rEw.jpg",
-    headline: "Performance Support That Stacks.",
-    body: "Blood-flow and performance consistency goals from your quiz are why this recommendation is included in your personalized pathway.",
   },
 ];
 
@@ -469,11 +438,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#f5f5f7]">
-      <main className="mx-auto flex w-full max-w-md flex-col gap-4 px-3 pb-32 pt-3 lg:max-w-none lg:gap-7 lg:px-2 lg:pb-24 lg:pt-2 xl:px-3">
-        <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-4 lg:p-6">
-            <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-5">
-              <div className="pl-2 lg:pl-3">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#f5f5f7]">
+      <main className="mx-auto flex w-full max-w-md flex-col gap-4 overflow-x-hidden px-3 pb-32 pt-3 lg:max-w-none lg:gap-7 lg:px-2 lg:pb-24 lg:pt-2 xl:px-3">
+        <div ref={builderRef} id="protocol-builder" className="sr-only" />
+        <section className="mx-auto w-full max-w-[1220px] overflow-hidden rounded-[24px] border border-[#d9d9d9] bg-white p-4 lg:p-5">
+            <div className="flex min-w-0 flex-col gap-6 lg:grid lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-3">
+              <div className="min-w-0 overflow-hidden px-2 lg:pl-3 lg:pr-0">
                 <p className="text-[10px] uppercase tracking-[0.18em] text-[#575757] lg:text-[12px]">
                   BROUGHT BY ADVISORY TEAM
                 </p>
@@ -499,10 +469,6 @@ export default function Home() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[#0033FF]">+</span>
-                    <span>Boost your testosterone levels</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#0033FF]">+</span>
                     <span>Shipping included for free</span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -513,7 +479,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={scrollToBuilder}
-                  className="mt-4 w-full rounded-full bg-[#0033FF] px-5 py-3 text-[12px] uppercase tracking-[0.12em] text-white lg:mt-5 lg:max-w-[400px] lg:text-[13px]"
+                  className="mx-auto mt-4 inline-flex w-[94%] max-w-[320px] items-center justify-center rounded-full bg-[#0033FF] px-5 py-3 text-[12px] uppercase tracking-[0.12em] text-white lg:mt-5 lg:mx-0 lg:w-full lg:max-w-[400px] lg:text-[13px]"
                 >
                   Continue
                 </button>
@@ -522,8 +488,154 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="rounded-[20px] border border-[#d9d9d9] bg-white p-2.5 lg:p-3">
-                <div className="grid h-full grid-cols-2 gap-2.5 lg:gap-2.5">
+              <div className="lg:hidden">
+                <div className="-mx-1 flex w-auto snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  {PRODUCTS.map((product) => {
+                    const isSelected = selectedIds.includes(product.id);
+                    const selectedCycle =
+                      billingByProduct[product.id] ?? DEFAULT_BILLING_CYCLE;
+                    const selectedBillingOption = getBillingOption(selectedCycle);
+                    const cyclePrice = getCyclePrice(product.price, selectedCycle);
+                    const cycleListPrice = getCycleListPrice(
+                      product.price,
+                      selectedCycle
+                    );
+                    const isBillingOpen = openBillingDropdownFor === product.id;
+
+                    return (
+                      <div
+                        key={`${product.id}-hero-mobile`}
+                        className="flex min-w-[86%] snap-start flex-col gap-1.5"
+                      >
+                        <div className="border-l-[4px] border-[#0033FF] px-1 pl-2">
+                          <p className="text-[9px] uppercase tracking-[0.16em] text-[#575757]">
+                            Recommended
+                          </p>
+                          <p className="mt-0.5 text-[12px] leading-tight uppercase tracking-[0.08em] [font-family:var(--font-gt-america-extended)] text-black">
+                            {product.focus}
+                          </p>
+                        </div>
+                        <article
+                          className={`relative flex h-full flex-col rounded-[18px] border p-3 transition ${
+                            isSelected
+                              ? "border-[#0033FF]/35 bg-[rgba(0,51,255,0.06)] shadow-[0_0_0_1px_rgba(0,51,255,0.18)]"
+                              : "border-[#d9d9d9] bg-white"
+                          } ${isBillingOpen ? "z-20" : ""}`}
+                        >
+                          <div className="relative mb-3 aspect-square w-full overflow-hidden rounded-[14px] border border-[#d9d9d9] bg-[#f5f5f7]">
+                            <Image
+                              src={product.image}
+                              alt={product.imageAlt}
+                              fill
+                              sizes="(max-width: 768px) 85vw, 420px"
+                              className="object-cover"
+                            />
+                          </div>
+                          <h3 className="mt-1 text-[15px] leading-tight [font-family:var(--font-gt-america-extended)]">
+                            {product.name}
+                          </h3>
+                          <p className="mt-1 text-sm text-black/70">
+                            {product.education}
+                          </p>
+                          <div className="mt-2">
+                            <div className="flex items-center gap-2">
+                              {cyclePrice < cycleListPrice ? (
+                                <p className="text-base font-semibold text-black/45 line-through">
+                                  ${cycleListPrice}
+                                </p>
+                              ) : null}
+                              <p className="text-base font-semibold text-black">
+                                ${cyclePrice}
+                              </p>
+                              {selectedBillingOption.discount > 0 ? (
+                                <span className="whitespace-nowrap rounded-full bg-[rgba(0,51,255,0.12)] px-2 py-1 text-[9px] leading-none uppercase tracking-[0.08em] text-[#0033FF]">
+                                  {Math.round(selectedBillingOption.discount * 100)}% Off
+                                </span>
+                              ) : null}
+                            </div>
+                          </div>
+                          <div className="mt-auto pt-3">
+                            <button
+                              type="button"
+                              onClick={() => toggleProduct(product.id)}
+                              className={`w-full rounded-full border px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] transition ${
+                                isSelected
+                                  ? "border-[#0033FF] bg-[#0033FF] text-white"
+                                  : "border-[#0033FF] bg-white text-[#0033FF]"
+                              }`}
+                            >
+                              {isSelected ? "Added" : "Select"}
+                            </button>
+                          </div>
+                          <label className="mt-2 block text-[10px] uppercase tracking-[0.1em] text-black/55">
+                            Billing cycle
+                          </label>
+                          <div
+                            className="relative mt-1"
+                            onBlur={(event) => {
+                              const nextTarget = event.relatedTarget as Node | null;
+                              if (!event.currentTarget.contains(nextTarget)) {
+                                setOpenBillingDropdownFor((current) =>
+                                  current === product.id ? null : current
+                                );
+                              }
+                            }}
+                          >
+                            <button
+                              type="button"
+                              className="flex w-full items-center justify-between rounded-xl border border-[#c8c8c8] bg-white px-3 py-2 text-sm [font-family:var(--font-gt-america)] text-black"
+                              onClick={() =>
+                                setOpenBillingDropdownFor((current) =>
+                                  current === product.id ? null : product.id
+                                )
+                              }
+                              aria-haspopup="listbox"
+                              aria-expanded={isBillingOpen}
+                            >
+                              <span>{selectedBillingOption.label}</span>
+                              <span className="text-black/65">⌄</span>
+                            </button>
+                            {isBillingOpen ? (
+                              <div
+                                role="listbox"
+                                className="absolute left-0 right-0 top-[calc(100%+0.35rem)] overflow-hidden rounded-xl border border-[#0033FF]/25 bg-white shadow-[0_14px_28px_-20px_rgba(0,51,255,0.85)]"
+                              >
+                                {BILLING_OPTIONS.map((option) => {
+                                  const isActive = option.value === selectedCycle;
+                                  return (
+                                    <button
+                                      key={option.value}
+                                      type="button"
+                                      className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm [font-family:var(--font-gt-america)] ${
+                                        isActive
+                                          ? "bg-[rgba(0,51,255,0.12)] text-[#0033FF]"
+                                          : "bg-white text-black hover:bg-[#f4f7ff]"
+                                      }`}
+                                      onClick={() => {
+                                        setBillingByProduct((current) => ({
+                                          ...current,
+                                          [product.id]: option.value,
+                                        }));
+                                        setOpenBillingDropdownFor(null);
+                                      }}
+                                    >
+                                      <span>{option.label}</span>
+                                      {isActive ? <span>✓</span> : null}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            ) : null}
+                          </div>
+                        </article>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="hidden rounded-[20px] border border-[#d9d9d9] bg-white p-2.5 lg:-ml-6 lg:block lg:self-center lg:p-2.5">
+                <div className="grid h-full grid-cols-3 gap-2">
                   {PRODUCTS.map((product) => {
                     const isSelected = selectedIds.includes(product.id);
                     const selectedCycle =
@@ -539,21 +651,21 @@ export default function Home() {
                     return (
                       <article
                         key={`${product.id}-hero`}
-                        className={`rounded-[12px] border p-2 transition lg:p-2.5 ${
+                        className={`min-w-[82%] snap-center rounded-[12px] border p-2 transition lg:min-w-0 lg:min-h-[440px] lg:p-3 ${
                           isSelected
                             ? "border-[#0033FF]/40 bg-[rgba(0,51,255,0.05)]"
                             : "border-[#d9d9d9] bg-[#f8f8f9]"
                         }`}
                       >
                         <div className="border-l-[3px] border-[#0033FF] pl-1.5">
-                          <p className="text-[8px] uppercase tracking-[0.14em] text-[#575757] lg:text-[9px]">
+                          <p className="text-[8px] uppercase tracking-[0.14em] text-[#575757] lg:text-[10px]">
                             Recommended
                           </p>
-                          <p className="mt-0.5 text-[10px] uppercase tracking-[0.08em] [font-family:var(--font-gt-america-extended)] text-[#181c23] lg:text-[11px]">
+                          <p className="mt-0.5 text-[10px] uppercase tracking-[0.08em] [font-family:var(--font-gt-america-extended)] text-[#181c23] lg:text-[12px]">
                             {product.focus}
                           </p>
                         </div>
-                        <div className="relative mt-1 aspect-[4/3] overflow-hidden rounded-[10px]">
+                        <div className="relative mt-1 aspect-[4/3] overflow-hidden rounded-[10px] lg:aspect-square">
                           <Image
                             src={product.image}
                             alt={`${product.name} preview`}
@@ -562,29 +674,29 @@ export default function Home() {
                             className="object-cover"
                           />
                         </div>
-                        <p className="mt-1.5 truncate text-[12px] [font-family:var(--font-gt-america-extended)] lg:text-[13px]">
+                        <p className="mt-1.5 truncate text-[12px] [font-family:var(--font-gt-america-extended)] lg:text-[15px]">
                           {product.name}
                         </p>
-                        <p className="mt-1 text-[11px] leading-snug text-[#575757] lg:text-[12px]">
+                        <p className="mt-1 text-[11px] leading-snug text-[#575757] lg:text-[13px]">
                           {product.highlight}
                         </p>
                         <div className="mt-1 flex items-center gap-1.5">
                           {cyclePrice < cycleListPrice ? (
-                            <p className="text-[11px] font-semibold text-black/45 line-through lg:text-[12px]">
+                            <p className="text-[11px] font-semibold text-black/45 line-through lg:text-[14px]">
                               ${cycleListPrice}
                             </p>
                           ) : null}
-                          <p className="text-[12px] font-semibold text-[#181c23] lg:text-[13px]">
+                          <p className="text-[12px] font-semibold text-[#181c23] lg:text-[15px]">
                             ${cyclePrice}
                           </p>
                           {selectedBillingOption.discount > 0 ? (
-                            <span className="rounded-full bg-[rgba(0,51,255,0.12)] px-2 py-0.5 text-[8px] uppercase tracking-[0.08em] text-[#0033FF] lg:text-[9px]">
+                            <span className="rounded-full bg-[rgba(0,51,255,0.12)] px-2 py-0.5 text-[8px] uppercase tracking-[0.08em] text-[#0033FF] lg:text-[10px]">
                               {Math.round(selectedBillingOption.discount * 100)}% Off
                             </span>
                           ) : null}
                         </div>
                         <div
-                          className="relative mt-2 flex items-center gap-1.5"
+                          className="relative mt-2 flex flex-col items-center gap-1.5"
                           onBlur={(event) => {
                             const nextTarget = event.relatedTarget as Node | null;
                             if (!event.currentTarget.contains(nextTarget)) {
@@ -596,7 +708,7 @@ export default function Home() {
                         >
                           <button
                             type="button"
-                            className="flex min-w-0 flex-1 items-center justify-between rounded-lg border border-[#c8c8c8] bg-white px-2 py-1.5 text-[11px] [font-family:var(--font-gt-america)] text-black lg:text-[12px]"
+                            className="flex w-full max-w-[170px] items-center justify-between rounded-lg border border-[#c8c8c8] bg-white px-2 py-1.5 text-[11px] [font-family:var(--font-gt-america)] text-black lg:text-[14px]"
                             onClick={() =>
                               setOpenBillingDropdownFor((current) =>
                                 current === product.id ? null : product.id
@@ -611,7 +723,7 @@ export default function Home() {
                           <button
                             type="button"
                             onClick={() => toggleProduct(product.id)}
-                            className={`rounded-full border px-2.5 py-1.5 text-[9px] uppercase tracking-[0.1em] transition lg:text-[10px] ${
+                            className={`w-full max-w-[170px] rounded-full border px-2.5 py-1.5 text-[9px] uppercase tracking-[0.1em] transition lg:text-[12px] ${
                               isSelected
                                 ? "border-[#0033FF] bg-[#0033FF] text-white"
                                 : "border-[#0033FF] bg-white text-[#0033FF]"
@@ -622,7 +734,7 @@ export default function Home() {
                           {isBillingOpen ? (
                             <div
                               role="listbox"
-                              className="absolute left-0 right-0 top-[calc(100%+0.25rem)] z-30 overflow-hidden rounded-lg border border-[#0033FF]/25 bg-white shadow-[0_14px_28px_-20px_rgba(0,51,255,0.85)]"
+                              className="absolute left-1/2 top-[calc(100%+0.25rem)] z-30 w-full max-w-[170px] -translate-x-1/2 overflow-hidden rounded-lg border border-[#0033FF]/25 bg-white shadow-[0_14px_28px_-20px_rgba(0,51,255,0.85)]"
                             >
                               {BILLING_OPTIONS.map((option) => {
                                 const isActive = option.value === selectedCycle;
@@ -661,11 +773,11 @@ export default function Home() {
         </section>
 
         <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-3 lg:p-4">
-          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 lg:gap-4">
+          <div className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-2 lg:gap-4 lg:overflow-visible lg:pb-0">
             {HERO_SOCIAL_PROOF.map((item) => (
               <article
                 key={`hero-proof-${item.title}`}
-                className="rounded-[20px] border border-[#e0e0e0] bg-[#f5f5f7] p-4 lg:p-5"
+                className="min-w-[86%] snap-center rounded-[20px] border border-[#e0e0e0] bg-[#f5f5f7] p-4 lg:min-w-0 lg:p-5"
               >
                 <p className="text-[15px] leading-none tracking-[0.2em] text-[#6a6a6d]">
                   ★★★★★
@@ -684,11 +796,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-3 lg:p-4">
+        <section className="mx-auto hidden w-full max-w-[1220px] rounded-[24px] border border-[#d9d9d9] bg-white p-3 lg:block lg:p-4">
           <div className="px-2 pb-2 pt-2 lg:px-6 lg:pb-2 lg:pt-3">
             <div
-              ref={builderRef}
-              id="protocol-builder"
               className="sr-only"
             >
               <h2 className="text-[22px] leading-tight [font-family:var(--font-gt-america-extended)]">
@@ -704,7 +814,7 @@ export default function Home() {
                 Cart ({selectedProducts.length})
               </button>
             </div>
-            <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0">
+            <div className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible lg:pb-0">
             {PRODUCTS.map((product) => {
                 const isSelected = selectedIds.includes(product.id);
                 const selectedCycle =
@@ -866,7 +976,7 @@ export default function Home() {
           </p>
           <div
             ref={whyCarouselRef}
-            className="mt-3 -mx-3 overflow-x-auto px-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:px-0"
+            className="mt-3 w-full overflow-x-auto overscroll-x-contain pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             <div className="flex snap-x snap-mandatory gap-3 lg:gap-4">
               {WHY_RECOMMENDED_CAROUSEL.map((slide, index) => {
@@ -944,7 +1054,7 @@ export default function Home() {
             Every Enhanced protocol is overseen by our Independent Medical Commission.
             World-class clinicians and scientists ensuring safety, efficacy, and scientific rigor at every step.
           </p>
-          <div className="mt-5 -mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 lg:mt-7">
+          <div className="mt-5 flex w-full snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-7 lg:grid lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:pb-0">
             {ADVISORS.map((advisor, index) => (
               <article
                 key={`advisor-${advisor.name}`}
@@ -1232,7 +1342,7 @@ export default function Home() {
             <button
               type="button"
               disabled={selectedProducts.length === 0}
-              className="mt-4 w-full rounded-full border border-[#0033FF] bg-[#0033FF] px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-white disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
+              className="mt-4 w-full max-w-full rounded-full border border-[#0033FF] bg-[#0033FF] px-4 py-3 text-[11px] uppercase tracking-[0.12em] text-white disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
             >
               CONTINUE
             </button>
