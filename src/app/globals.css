@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
+  --background: #f5f5f7;
+  --foreground: #181c23;
   --enhanced-primary: #0033ff;
   --enhanced-primary-hover: #0027cc;
   --font-gt-america: "GT America", "Avenir Next", "Segoe UI", sans-serif;
   --font-gt-america-extended: "GT America Extended", "Avenir Next", "Segoe UI",
     sans-serif;
+  --font-ps-times: "PS Times Regular", "Times New Roman", serif;
 }
 
 @theme inline {
@@ -49,6 +50,15 @@
   src: url("https://shop.enhanced.com/cdn/shop/t/53/assets/GT-America-Extended-Bold.woff2?v=4119962383453379611773860597")
     format("woff2");
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PS Times Regular";
+  src: url("https://framerusercontent.com/assets/agPpOzdFP1xBmiukHZjRPB1b8MQ.woff2")
+    format("woff2");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
