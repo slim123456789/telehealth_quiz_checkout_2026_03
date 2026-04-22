@@ -353,20 +353,14 @@ export default function Home() {
                   BROUGHT BY ADVISORY TEAM
                 </p>
                 <h1 className="mt-2 text-[28px] leading-[0.98] [font-family:var(--font-gt-america-extended)] text-[#181c23] lg:text-[46px]">
-                  YOUR PERSONALIZED
+                  YOUR <span className="text-[#0033FF]">ENHANCED</span> PERSONALIZED
                   <br />
                   PROTOCOL IS READY.
-                  <br />
-                  <span className="text-[#0033FF]">
-                    ENHANCED
-                    <br />
-                    BUILDS IT.
-                  </span>
                 </h1>
                 <ul className="mt-4 space-y-2 text-[16px] text-[#181c23] lg:mt-5 lg:text-[17px]">
                   <li className="flex items-start gap-2">
                     <span className="text-[#0033FF]">+</span>
-                    <span>Feel results in 2-4 weeks</span>
+                    <span>Feel results in just 2-4 weeks*</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[#0033FF]">+</span>
@@ -374,11 +368,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-[#0033FF]">+</span>
-                    <span>Shipping included for free</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#0033FF]">+</span>
-                    <span>Physican consultaton included for free</span>
+                    <span>Science-backed & Clinician-led</span>
                   </li>
                 </ul>
                 <button
@@ -787,13 +777,15 @@ export default function Home() {
                 key={`advisor-${advisor.name}`}
                 className="h-full min-w-[88%] snap-center lg:min-w-0"
               >
-                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[16px] bg-[#f5f5f7]">
+                <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[16px] bg-[#f5f5f7]">
                   <Image
                     src={advisor.image}
                     alt={`${advisor.name} profile`}
                     fill
                     sizes="(max-width: 1024px) 100vw, 32vw"
-                    className="object-cover"
+                    className={`object-cover ${
+                      index < 2 ? "object-[center_20%]" : "object-center"
+                    }`}
                   />
                 </div>
                 <h3 className="mt-3 text-[17px] [font-family:var(--font-gt-america-extended)] text-[#181c23] lg:text-[20px]">
